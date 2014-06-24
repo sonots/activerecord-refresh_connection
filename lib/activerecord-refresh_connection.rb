@@ -1,0 +1,1 @@
+require 'activerecord-refresh_connection/active_record/connection_adapters/refresh_connection_management'
