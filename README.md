@@ -22,7 +22,7 @@ $ bundle
 
 ## How to Use
 
-This gem provides a rack middleware `ActiveRecord::ConnectionAdapters::RefreshConnectionManagement`. 
+This gem provides a rack middleware `ActiveRecord::ConnectionAdapters::RefreshConnectionManagement` which disconnects all connections in each rack request. 
 
 ### Rails
 
@@ -30,6 +30,8 @@ Swap the default rails ConnectionManagement.
 
 ```ruby
 # config/application.rb
+require 'activerecord-refresh_connection'
+
 class Application < Rails::Application
   config.autoload_paths += %W(#{config.root}/lib)
   config.middleware.swap ActiveRecord::ConnectionAdapters::ConnectionManagement,
@@ -37,7 +39,7 @@ class Application < Rails::Application
 end
 ```
 
-Check
+Middleware check. 
 
 ```bash
 bundle exec rake middleware
