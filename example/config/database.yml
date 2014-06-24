@@ -1,0 +1,18 @@
+default: &default
+  adapter: mysql2
+  database: activerecord-refresh_connection
+  pool: 5
+  timeout: 5000
+  username: root
+  password:
+  host: localhost
+  port: 3306
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
