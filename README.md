@@ -24,7 +24,9 @@ $ bundle
 
 This gem provides a rack middleware `ActiveRecord::ConnectionAdapters::RefreshConnectionManagement`. 
 
-Rails: swap with the default rails ConnectionManagement.
+### Rails
+
+Swap the default rails ConnectionManagement.
 
 ```ruby
 # config/application.rb
@@ -34,6 +36,16 @@ class Application < Rails::Application
     "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement"
 end
 ```
+
+Check
+
+```bash
+bundle exec rake middleware
+```
+
+### Sinatra
+
+To Be Written
 
 ## ChangeLog
 
