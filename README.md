@@ -30,10 +30,7 @@ Swap the default rails ConnectionManagement.
 
 ```ruby
 # config/application.rb
-require 'activerecord-refresh_connection'
-
 class Application < Rails::Application
-  config.autoload_paths += %W(#{config.root}/lib)
   config.middleware.swap ActiveRecord::ConnectionAdapters::ConnectionManagement,
     "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement"
 end
@@ -47,7 +44,13 @@ bundle exec rake middleware
 
 ### Sinatra
 
-To Be Written
+```ruby
+# config.ru
+require 'activerecord-refresh_connection'
+
+use ActiveRecord::ConnectionAdapters::RefreshConnectionManagement
+run App
+```
 
 ## See Also
 
