@@ -3,7 +3,7 @@ module ActiveRecord
     class RefreshConnectionManagement
       DEFAULT_OPTIONS = {max_requests: 1}
 
-      def initialize(app, options)
+      def initialize(app, options = {})
         @app = app
         @options = DEFAULT_OPTIONS.merge(options)
         @mutex = Mutex.new
