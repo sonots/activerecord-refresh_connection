@@ -33,6 +33,11 @@ Swap the default rails ConnectionManagement.
 class Application < Rails::Application
   config.middleware.swap ActiveRecord::ConnectionAdapters::ConnectionManagement,
     "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement"
+
+  ## If you would like to clear connections after 5 requests:
+  # config.middleware.insert_before ActiveRecord::ConnectionAdapters::ConnectionManagement,
+  #   "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement", max_requests: 5
+  # config.middleware.delete ActiveRecord::ConnectionAdapters::ConnectionManagement
 end
 ```
 
@@ -49,6 +54,10 @@ bundle exec rake middleware
 require 'activerecord-refresh_connection'
 
 use ActiveRecord::ConnectionAdapters::RefreshConnectionManagement
+
+## If you would like to clear connections after 5 requests:
+# use ActiveRecord::ConnectionAdapters::RefreshConnectionManagement, max_requests: 5
+
 run App
 ```
 
