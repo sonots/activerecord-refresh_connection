@@ -16,22 +16,28 @@ module ActiveRecord
 
         response = @app.call(env)
 
-        clear_connections = should_clear_connections? && !testing
-
         response[2] = ::Rack::BodyProxy.new(response[2]) do
           # disconnect all connections on the connection pool
-          ActiveRecord::Base.clear_all_connections! if clear_connections
+          clear_connections unless testing
         end
 
         response
       rescue Exception
-        ActiveRecord::Base.clear_all_connections! if clear_connections
+        clear_connections unless testing
         raise
       end
 
       private
 
-      def should_clear_connections?
+      def clear_connections
+        if should_clear_all_connections?
+          ActiveRecord::Base.clear_all_connections!
+        else
+          ActiveRecord::Base.clear_active_connections!
+        end
+      end
+
+      def should_clear_all_connections?
         return true if max_requests <= 1
 
         @mutex.synchronize do
