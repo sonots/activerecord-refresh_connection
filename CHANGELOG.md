@@ -1,3 +1,9 @@
+## 0.0.4
+
+Fixes:
+
+* Call clear_active_connections! if not calling clear_all_connections!
+
 ## 0.0.3
 
 Fixes:
