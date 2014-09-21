@@ -21,3 +21,9 @@ tmp
 *.a
 mkmf.log
 .ruby-version
+
+# Rails
+spec/rails/*/.bundle
+spec/rails/*/db/*.sqlite3
+spec/rails/*/log/*.log
+spec/rails/*/tmp

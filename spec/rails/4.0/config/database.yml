@@ -1,0 +1,9 @@
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: rails40_dummy
+  pool: 5
+  username: root
+  password:
+  port: 3306
