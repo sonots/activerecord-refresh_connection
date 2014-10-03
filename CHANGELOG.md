@@ -1,3 +1,9 @@
+## 0.0.5
+
+Changes:
+
+* Just add gem.homepage
+
 ## 0.0.4
 
 Fixes:
