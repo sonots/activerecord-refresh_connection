@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sonots@gmail.com"]
   spec.summary       = %q{Refresh ActiveRecord connection on each rack request}
   spec.description   = %q{Refresh ActiveRecord connection on each rack request.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/sonots/activerecord-refresh_connection"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
