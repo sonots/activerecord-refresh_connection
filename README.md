@@ -24,7 +24,33 @@ $ bundle
 
 This gem provides a rack middleware `ActiveRecord::ConnectionAdapters::RefreshConnectionManagement` which disconnects all connections in each rack request, which results in refreshing all connections in each rack request. 
 
-### Rails
+### Rails 5
+
+NOTE: activerecord-refresh_connection does not work with puma, and webrick server in rails 5.
+
+```ruby
+# config/application.rb
+class Application < Rails::Application
+  config.middleware.insert_before ActionDispatch::Executor,
+    "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement"
+
+  ## If you would like to clear connections after 5 requests:
+  # config.middleware.insert_before ActionDispatch::Executor,
+  #   "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement", max_requests: 5
+end
+```
+
+Middleware check. 
+
+```bash
+bundle exec rake middleware
+```
+
+Use unicorn server to run your application.
+
+### Rails 4
+
+NOTE: activerecord-refresh_connection does not work with puma server in rails 4.
 
 Swap the default rails ConnectionManagement.
 
@@ -68,6 +94,18 @@ run App
 ## ChangeLog
 
 See [CHANGELOG.md](CHANGELOG.md) for details.
+
+## Development
+
+Run example
+
+```
+cd example/xxxx
+bundle
+bundle exec foreman start
+```
+
+Watch `show processlist` in mysql console to see connections are killed on each access.
 
 ## Contributing
 
