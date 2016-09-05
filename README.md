@@ -32,11 +32,11 @@ NOTE: activerecord-refresh_connection does not work with puma, and webrick serve
 # config/application.rb
 class Application < Rails::Application
   config.middleware.insert_before ActionDispatch::Executor,
-    "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement"
+    ActiveRecord::ConnectionAdapters::RefreshConnectionManagement
 
   ## If you would like to clear connections after 5 requests:
   # config.middleware.insert_before ActionDispatch::Executor,
-  #   "ActiveRecord::ConnectionAdapters::RefreshConnectionManagement", max_requests: 5
+  #   ActiveRecord::ConnectionAdapters::RefreshConnectionManagement, max_requests: 5
 end
 ```
 
