@@ -26,7 +26,7 @@ This gem provides a rack middleware `ActiveRecord::ConnectionAdapters::RefreshCo
 
 ### Rails 5
 
-NOTE: activerecord-refresh_connection does not work with puma, and webrick server in rails 5.
+NOTE: activerecord-refresh_connection **does not work with puma, and webrick** server in rails 5.
 
 ```ruby
 # config/application.rb
@@ -50,7 +50,7 @@ Use unicorn server to run your application.
 
 ### Rails 4
 
-NOTE: activerecord-refresh_connection does not work with puma server in rails 4.
+NOTE: activerecord-refresh_connection **does not work with puma** server in rails 4.
 
 Swap the default rails ConnectionManagement.
 
