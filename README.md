@@ -24,9 +24,9 @@ $ bundle
 
 This gem provides a rack middleware `ActiveRecord::ConnectionAdapters::RefreshConnectionManagement` which disconnects all connections in each rack request, which results in refreshing all connections in each rack request. 
 
-### Rails 5
+### Rails 5 and Rails 6
 
-NOTE: activerecord-refresh_connection **does not work with puma, and webrick** server in rails 5.
+NOTE: activerecord-refresh_connection **does not work with puma, and webrick** server in rails 5 and rails 6.
 
 ```ruby
 # config/application.rb
