@@ -37,7 +37,7 @@ module ActiveRecord
           if legacy_connection_handling?
             clear_legacy_compatible_connections
           else
-            clear_all_roles_connections
+            clear_multi_db_connections
           end
         elsif @ar_version >= AR_VERSION_6_0
           clear_legacy_compatible_connections
@@ -54,22 +54,14 @@ module ActiveRecord
         end
       end
 
-      def all_roles
-        roles = []
-        ActiveRecord::Base.connection_handler.instance_variable_get(:@owner_to_pool_manager).each_value do |pool_manager|
-          roles.concat(pool_manager.role_names)
-        end
-        roles.uniq
-      end
-
-      def clear_all_roles_connections
+      def clear_multi_db_connections
         if should_clear_all_connections?
-          all_roles.each do |role|
-            ActiveRecord::Base.clear_all_connections!(role)
+          ActiveRecord::Base.connection_handler.all_connection_pools.each do |pool|
+            pool.disconnect!
           end
         else
-          all_roles.each do |role|
-            ActiveRecord::Base.clear_active_connections!(role)
+          ActiveRecord::Base.connection_handler.all_connection_pools.each do |pool|
+            pool.release_connection if pool.active_connection? && !pool.connection.transaction_open?
           end
         end
       end
