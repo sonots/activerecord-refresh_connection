@@ -66,12 +66,14 @@ module ActiveRecord
           ActiveRecord::Base.connection_handlers.each_value do |handler|
             handler.connection_pool_list.each(&:disconnect!)
           end
+          ActiveRecord::Base.clear_all_connections!
         else
           ActiveRecord::Base.connection_handlers.each_value do |handler|
             handler.connection_pool_list.each do |pool|
               pool.release_connection if pool.active_connection? && !pool.connection.transaction_open?
             end
           end
+          ActiveRecord::Base.clear_active_connections!
         end
       end
 
