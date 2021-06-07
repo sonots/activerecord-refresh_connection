@@ -8,6 +8,7 @@ module ActiveRecord
         @options = DEFAULT_OPTIONS.merge(options)
         @mutex = Mutex.new
 
+        resolve_clear_connections
         reset_remain_count
       end
 
@@ -30,6 +31,61 @@ module ActiveRecord
       private
 
       def clear_connections
+        __send__(@clear_connections)
+      end
+
+      def resolve_clear_connections
+        ar_version = ActiveRecord.gem_version.to_s
+
+        @clear_connections =
+          if ar_version >= "6.1"
+            if ActiveRecord::Base.legacy_connection_handling
+              :clear_legacy_compatible_connections
+            else
+              :clear_multi_db_connections
+            end
+          elsif ar_version >= "6.0"
+            :clear_ar_6_0_connections
+          else
+            :clear_legacy_connections
+          end
+      end
+
+      def clear_multi_db_connections
+        if should_clear_all_connections?
+          ActiveRecord::Base.connection_handler.all_connection_pools.each(&:disconnect!)
+        else
+          ActiveRecord::Base.connection_handler.all_connection_pools.each do |pool|
+            pool.release_connection if pool.active_connection? && !pool.connection.transaction_open?
+          end
+        end
+      end
+
+      def clear_legacy_compatible_connections
+        if should_clear_all_connections?
+          ActiveRecord::Base.connection_handlers.each_value do |handler|
+            handler.connection_pool_list.each(&:disconnect!)
+          end
+          ActiveRecord::Base.clear_all_connections!
+        else
+          ActiveRecord::Base.connection_handlers.each_value do |handler|
+            handler.connection_pool_list.each do |pool|
+              pool.release_connection if pool.active_connection? && !pool.connection.transaction_open?
+            end
+          end
+          ActiveRecord::Base.clear_active_connections!
+        end
+      end
+
+      def clear_ar_6_0_connections
+        if should_clear_all_connections?
+          ActiveRecord::Base.connection_handlers.each_value(&:clear_all_connections!)
+        else
+          ActiveRecord::Base.connection_handlers.each_value(&:clear_active_connections!)
+        end
+      end
+
+      def clear_legacy_connections
         if should_clear_all_connections?
           ActiveRecord::Base.clear_all_connections!
         else
